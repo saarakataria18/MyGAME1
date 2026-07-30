@@ -312,3 +312,42 @@ function draw(){
     // Portal
     ctx.strokeStyle="#b84dff";
     ctx.lineWidth=5;
+ ctx.beginPath();
+    ctx.ellipse(
+        portal.x+portal.w/2,
+        portal.y+portal.h/2,
+        portal.w/2,
+        portal.h/2,
+        0,
+        0,
+        Math.PI*2
+    );
+    ctx.stroke();
+
+    // Player
+    ctx.fillStyle="#3d7eff";
+    ctx.fillRect(player.x,player.y,player.w,player.h);
+
+    // Eyes
+    ctx.fillStyle="white";
+    ctx.fillRect(player.x+7,player.y+8,5,5);
+    ctx.fillRect(player.x+20,player.y+8,5,5);
+
+    ctx.fillStyle="black";
+    ctx.fillRect(player.x+9,player.y+10,2,2);
+    ctx.fillRect(player.x+22,player.y+10,2,2);
+
+}
+
+// ---------- Game Loop ----------
+
+function game(){
+
+    update();
+    draw();
+
+    requestAnimationFrame(game);
+
+}
+
+game();
