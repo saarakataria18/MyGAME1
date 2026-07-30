@@ -223,3 +223,37 @@ if(level===1){
     level=1;
     loadLevel(1);
 }
+function draw(){
+
+    // Sky
+    ctx.fillStyle = "#70C5FF";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    // Platforms
+    ctx.fillStyle = "#3CB043";
+    for(let p of platforms){
+        ctx.fillRect(p.x,p.y,p.w,p.h);
+    }
+
+    // Spikes
+    ctx.fillStyle = "#ff3b30";
+    for(let s of spikes){
+        ctx.fillRect(s.x,s.y,s.w,s.h);
+    }
+
+    // Goal
+    ctx.fillStyle = "#FFD700";
+    ctx.fillRect(goal.x,goal.y,goal.w,goal.h);
+
+    // Player
+    ctx.fillStyle = "#4A6CFF";
+    ctx.fillRect(player.x,player.y,player.w,player.h);
+}
+
+function game(){
+    update();
+    draw();
+    requestAnimationFrame(game);
+}
+
+game();
