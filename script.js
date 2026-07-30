@@ -105,6 +105,8 @@ function update() {
     }
 }
 
+ctx.fillStyle = "#70c5ff";
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
