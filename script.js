@@ -50,6 +50,69 @@ function loadLevel(num){
 
     }else if(num===2){
 
+    // Level 2 code
+
+}else if(num===3){
+
+    // Level 3 code
+
+}else if(num===4){
+
+    // Level 4 code
+
+}
+
+    platforms=[
+        {x:0,y:470,w:900,h:30},
+        {x:80,y:420,w:60,h:20},
+        {x:180,y:360,w:60,h:20},
+        {x:300,y:300,w:60,h:20},
+        {x:430,y:240,w:60,h:20},
+        {x:570,y:180,w:60,h:20},
+        {x:710,y:120,w:60,h:20},
+        {x:820,y:70,w:50,h:20}
+    ];
+
+    spikes=[
+        {x:140,y:450,w:50,h:20},
+        {x:260,y:340,w:50,h:20},
+        {x:390,y:280,w:50,h:20},
+        {x:530,y:160,w:50,h:20},
+        {x:670,y:100,w:50,h:20}
+    ];
+
+    goal={
+        x:840,
+        y:10,
+        w:40,
+        h:60
+    };
+}
+platforms=[
+        {x:0,y:470,w:900,h:30},
+        {x:90,y:420,w:70,h:20},
+        {x:210,y:360,w:70,h:20},
+        {x:330,y:300,w:70,h:20},
+        {x:470,y:250,w:70,h:20},
+        {x:610,y:190,w:70,h:20},
+        {x:760,y:130,w:70,h:20}
+    ];
+
+    spikes=[
+        {x:170,y:450,w:70,h:20},
+        {x:290,y:340,w:60,h:20},
+        {x:430,y:230,w:60,h:20},
+        {x:650,y:170,w:60,h:20}
+    ];
+
+    goal={
+        x:840,
+        y:50,
+        w:40,
+        h:60
+    };
+}
+
         platforms=[
             {x:0,y:470,w:900,h:30},
             {x:120,y:410,w:90,h:20},
@@ -140,17 +203,23 @@ function update(){
     }
 
     if(collide(player,goal)){
+if(level===1){
+    level=2;
+    alert("Level 2!");
+    loadLevel(2);
 
-        if(level===1){
-            level=2;
-            alert("Level 2!");
-            loadLevel(2);
-        }else{
-            alert("You beat the demo!");
-            level=1;
-            loadLevel(1);
-        }
+}else if(level===2){
+    level=3;
+    alert("Level 3!");
+    loadLevel(3);
 
-    }
+}else if(level===3){
+    level=4;
+    alert("Level 4!");
+    loadLevel(4);
 
+}else{
+    alert("You beat all 4 levels!");
+    level=1;
+    loadLevel(1);
 }
