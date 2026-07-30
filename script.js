@@ -1,11 +1,13 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
+let level = 1;
+
 const player = {
     x: 50,
     y: 400,
-    w: 30,
-    h: 30,
+    w: 32,
+    h: 32,
     dx: 0,
     dy: 0,
     speed: 5,
@@ -16,159 +18,139 @@ const player = {
 const gravity = 0.6;
 const keys = {};
 
-document.addEventListener("keydown", e => {
-    keys[e.key] = true;
-});
+document.addEventListener("keydown", e => keys[e.key] = true);
+document.addEventListener("keyup", e => keys[e.key] = false);
 
-document.addEventListener("keyup", e => {
-    keys[e.key] = false;
-});
+let platforms = [];
+let spikes = [];
+let goal = {};
 
-const platforms = [
-    {x:0,y:470,w:900,h:30},
-    {x:200,y:380,w:120,h:20},
-    {x:400,y:320,w:120,h:20},
-    {x:600,y:250,w:120,h:20}
-];
+function loadLevel(num){
 
-const spikes = [
-    {x:340,y:450,w:60,h:20},
-    {x:520,y:300,w:40,h:20}
-];
+    if(num===1){
 
-const goal = {
-    x:820,
-    y:180,
-    w:40,
-    h:60
-};
+        platforms=[
+            {x:0,y:470,w:900,h:30},
+            {x:200,y:380,w:140,h:20},
+            {x:420,y:300,w:120,h:20},
+            {x:650,y:220,w:120,h:20}
+        ];
 
-function collide(a,b){
-    return (
-        a.x < b.x + b.w &&
-        a.x + a.w > b.x &&
-        a.y < b.y + b.h &&
-        a.y + a.h > b.y
-    );
+        spikes=[
+            {x:350,y:450,w:70,h:20},
+            {x:560,y:280,w:50,h:20}
+        ];
+
+        goal={
+            x:820,
+            y:150,
+            w:40,
+            h:60
+        };
+
+    }else if(num===2){
+
+        platforms=[
+            {x:0,y:470,w:900,h:30},
+            {x:120,y:410,w:90,h:20},
+            {x:250,y:350,w:90,h:20},
+            {x:390,y:280,w:90,h:20},
+            {x:540,y:210,w:90,h:20},
+            {x:710,y:150,w:90,h:20}
+        ];
+
+        spikes=[
+            {x:180,y:450,w:80,h:20},
+            {x:470,y:260,w:60,h:20},
+            {x:650,y:130,w:50,h:20}
+        ];
+
+        goal={
+            x:840,
+            y:70,
+            w:40,
+            h:60
+        };
+    }
+
+    resetPlayer();
 }
 
-function reset(){
-    player.x = 50;
-    player.y = 400;
-    player.dy = 0;
+loadLevel(1);
+
+function resetPlayer(){
+    player.x=50;
+    player.y=400;
+    player.dy=0;
+}
+
+function collide(a,b){
+    return(
+        a.x<b.x+b.w &&
+        a.x+a.w>b.x &&
+        a.y<b.y+b.h &&
+        a.y+a.h>b.y
+    );
 }
 
 function update(){
 
-    if(keys["ArrowLeft"]) player.dx = -player.speed;
-    else if(keys["ArrowRight"]) player.dx = player.speed;
-    else player.dx = 0;
+    if(keys["ArrowLeft"])
+        player.dx=-player.speed;
+    else if(keys["ArrowRight"])
+        player.dx=player.speed;
+    else
+        player.dx=0;
 
-    player.x += player.dx;
+    player.x+=player.dx;
 
-    player.dy += gravity;
-    player.y += player.dy;
+    player.dy+=gravity;
+    player.y+=player.dy;
 
-    player.grounded = false;
+    player.grounded=false;
 
     for(let p of platforms){
 
         if(
-            player.x + player.w > p.x &&
-            player.x < p.x + p.w &&
-            player.y + player.h > p.y &&
-            player.y + player.h < p.y + 20 &&
-            player.dy >= 0
+            player.x+player.w>p.x &&
+            player.x<p.x+p.w &&
+            player.y+player.h>p.y &&
+            player.y+player.h<p.y+20 &&
+            player.dy>=0
         ){
-            player.y = p.y - player.h;
-            player.dy = 0;
-            player.grounded = true;
+
+            player.y=p.y-player.h;
+            player.dy=0;
+            player.grounded=true;
+
         }
+
     }
 
     if(keys["ArrowUp"] && player.grounded){
-        player.dy = player.jump;
+        player.dy=player.jump;
     }
 
     for(let s of spikes){
+
         if(collide(player,s)){
-            reset();
+            resetPlayer();
         }
+
     }
 
     if(collide(player,goal)){
-        alert("LEVEL COMPLETE!");
-        reset();
+
+        if(level===1){
+            level=2;
+            alert("Level 2!");
+            loadLevel(2);
+        }else{
+            alert("You beat the demo!");
+            level=1;
+            loadLevel(1);
+        }
+
     }
 
 }
-
-function draw(){
-
-    // Sky
-    ctx.fillStyle = "#70C5FF";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-
-    // Clouds
-    ctx.fillStyle = "white";
-
-    ctx.beginPath();
-    ctx.arc(120,80,25,0,Math.PI*2);
-    ctx.arc(145,70,30,0,Math.PI*2);
-    ctx.arc(170,80,25,0,Math.PI*2);
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.arc(620,120,25,0,Math.PI*2);
-    ctx.arc(645,110,30,0,Math.PI*2);
-    ctx.arc(670,120,25,0,Math.PI*2);
-    ctx.fill();
-
-    // Platforms
-    ctx.fillStyle = "#3CB043";
-
-    for(let p of platforms){
-        ctx.fillRect(p.x,p.y,p.w,p.h);
-    }
-
-    // Spikes
-    ctx.fillStyle = "#ff3b30";
-
-    for(let s of spikes){
-        ctx.beginPath();
-        ctx.moveTo(s.x, s.y + s.h);
-        ctx.lineTo(s.x + s.w/2, s.y);
-        ctx.lineTo(s.x + s.w, s.y + s.h);
-        ctx.closePath();
-        ctx.fill();
-    }
-
-    // Goal
-    ctx.fillStyle = "#FFD700";
-    ctx.fillRect(goal.x,goal.y,goal.w,goal.h);
-
-    ctx.strokeStyle = "black";
-    ctx.strokeRect(goal.x,goal.y,goal.w,goal.h);
-
-    // Player
-    ctx.fillStyle = "#4A6CFF";
-    ctx.fillRect(player.x,player.y,player.w,player.h);
-
-    // Eyes
-    ctx.fillStyle = "white";
-    ctx.fillRect(player.x+6,player.y+8,5,5);
-    ctx.fillRect(player.x+19,player.y+8,5,5);
-
-    ctx.fillStyle = "black";
-    ctx.fillRect(player.x+8,player.y+10,2,2);
-    ctx.fillRect(player.x+21,player.y+10,2,2);
-
-}
-
-function game(){
-    update();
-    draw();
-    requestAnimationFrame(game);
-}
-
-game();
