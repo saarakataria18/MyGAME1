@@ -14,8 +14,6 @@ const HEIGHT = canvas.height;
 let gameState = "menu";
 let currentLevel = 1;
 
-loadLevel(currentLevel);
-
 // ---------- Player ----------
 
 const player = {
@@ -226,8 +224,9 @@ function loadLevel(level){
 };
 
     }
-
-}
+    
+loadLevel(currentLevel);
+    
 // ---------- Reset ----------
 
 function resetPlayer(){
@@ -532,8 +531,6 @@ for(let s of spinners){
     ctx.fillStyle="black";
     ctx.fillRect(player.x+9,player.y+10,2,2);
     ctx.fillRect(player.x+22,player.y+10,2,2);
-
-}
 
 }
 // ==========================
