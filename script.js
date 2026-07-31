@@ -14,6 +14,8 @@ const HEIGHT = canvas.height;
 let gameState = "menu";
 let currentLevel = 1;
 
+loadLevel(currentLevel);
+
 // ---------- Player ----------
 
 const player = {
@@ -64,27 +66,168 @@ const clouds = [
 
 // ---------- Level Objects ----------
 
-const platforms = [
-    {x:0,y:470,w:900,h:30},
-    {x:180,y:380,w:160,h:20},
-    {x:420,y:290,w:160,h:20},
-    {x:680,y:190,w:140,h:20}
-];
+let platforms = [];
+let spinners = [];
+let portal = {};
 
-const spinner = {
-    x:350,
-    y:450,
-    r:20,
-    angle:0
-};
+function loadLevel(level){
 
-const portal = {
-    x:820,
-    y:100,
+    if(level === 1){
+
+        platforms = [
+            {x:0,y:470,w:900,h:30},
+            {x:180,y:380,w:160,h:20},
+            {x:420,y:290,w:160,h:20},
+            {x:680,y:190,w:140,h:20}
+        ];
+
+        spinners = [
+            {x:350,y:450,r:20,angle:0}
+        ];
+
+        portal = {
+            x:820,
+            y:100,
+            w:45,
+            h:80
+        };
+
+    }else if(level === 2){
+
+        platforms = [
+            {x:0,y:470,w:900,h:30},
+            {x:120,y:410,w:110,h:20},
+            {x:280,y:340,w:90,h:20},
+            {x:430,y:270,w:80,h:20},
+            {x:560,y:210,w:70,h:20},
+            {x:700,y:150,w:60,h:20}
+        ];
+
+        spinners = [
+            {x:240,y:450,r:20,angle:0},
+            {x:520,y:250,r:20,angle:0}
+        ];
+
+        portal = {
+            x:810,
+            y:60,
+            w:45,
+            h:80
+        };
+
+}else if(level === 3){
+
+    platforms = [
+        {x:0,y:470,w:900,h:30},
+
+        {x:100,y:410,w:90,h:20},
+        {x:240,y:350,w:70,h:20},
+        {x:360,y:285,w:60,h:20},
+        {x:480,y:220,w:55,h:20},
+        {x:610,y:155,w:50,h:20},
+        {x:740,y:95,w:45,h:20}
+    ];
+
+    spinners = [
+        {x:200,y:450,r:20,angle:0},
+        {x:430,y:255,r:20,angle:0},
+        {x:670,y:130,r:20,angle:0}
+    ];
+
+    portal = {
+        x:830,
+        y:20,
+        w:45,
+        h:80
+    };
+
+}else if(level === 4){
+
+    platforms = [
+        {x:0,y:470,w:900,h:30},
+
+        {x:80,y:420,w:80,h:20},
+        {x:200,y:360,w:70,h:20},
+        {x:320,y:300,w:60,h:20},
+        {x:450,y:240,w:55,h:20},
+        {x:580,y:180,w:50,h:20},
+        {x:690,y:120,w:45,h:20},
+        {x:790,y:60,w:40,h:20}
+    ];
+
+    spinners = [
+        {x:170,y:450,r:20,angle:0},
+        {x:300,y:340,r:20,angle:0},
+        {x:520,y:220,r:20,angle:0},
+        {x:720,y:100,r:20,angle:0}
+    ];
+
+    portal = {
+        x:840,
+        y:0,
+        w:40,
+        h:70
+    };
+
+}else if(level === 5){
+
+    platforms = [
+        {x:0,y:470,w:900,h:30},
+
+        {x:120,y:420,w:100,h:20,move:true,min:80,max:260,speed:2,dir:1},
+        {x:320,y:340,w:90,h:20},
+        {x:470,y:270,w:90,h:20,move:true,min:430,max:650,speed:2.5,dir:1},
+        {x:680,y:180,w:80,h:20},
+        {x:780,y:90,w:70,h:20}
+    ];
+
+    spinners = [
+        {x:240,y:450,r:20,angle:0},
+        {x:420,y:320,r:20,angle:0},
+        {x:610,y:250,r:20,angle:0},
+        {x:740,y:150,r:20,angle:0},
+        {x:520,y:450,r:20,angle:0}
+    ];
+
+    portal = {
+        x:830,
+        y:10,
+        w:45,
+        h:80
+    };
+
+}else if(level === 6){
+
+    platforms = [
+        {x:0,y:470,w:900,h:30},
+
+        {x:100,y:420,w:80,h:20},
+        {x:220,y:360,w:70,h:20},
+        {x:350,y:300,w:65,h:20},
+        {x:490,y:240,w:60,h:20},
+        {x:620,y:170,w:55,h:20},
+        {x:760,y:90,w:50,h:20}
+    ];
+
+    spinners = [
+        {x:180,y:450,r:20,angle:0,speed:0.30},
+        {x:300,y:340,r:20,angle:0,speed:0.28},
+        {x:440,y:280,r:20,angle:0,speed:0.35},
+        {x:560,y:200,r:20,angle:0,speed:0.32},
+        {x:700,y:130,r:20,angle:0,speed:0.40},
+        {x:520,y:450,r:20,angle:0,speed:0.38}
+    ];
+
+   portal = {
+    x:835,
+    y:5,
     w:45,
     h:80
 };
 
+    }
+
+}
 // ---------- Reset ----------
 
 function resetPlayer(){
@@ -162,25 +305,37 @@ function update(){
 
     // ---------- Platforms ----------
 
-    for(let p of platforms){
+for(let p of platforms){
 
-        if(
+    // Move the platform if it is a moving platform
+    if(p.move){
 
-            player.x + player.w > p.x &&
-            player.x < p.x + p.w &&
-            player.y + player.h > p.y &&
-            player.y + player.h < p.y + 20 &&
-            player.dy >= 0
+        p.x += p.speed * p.dir;
 
-        ){
-
-            player.y = p.y - player.h;
-            player.dy = 0;
-            player.grounded = true;
-
+        if(p.x < p.min || p.x > p.max){
+            p.dir *= -1;
         }
 
     }
+
+    // Player collision
+    if(
+
+        player.x + player.w > p.x &&
+        player.x < p.x + p.w &&
+        player.y + player.h > p.y &&
+        player.y + player.h < p.y + 20 &&
+        player.dy >= 0
+
+    ){
+
+        player.y = p.y - player.h;
+        player.dy = 0;
+        player.grounded = true;
+
+    }
+
+}
 
     // ---------- Jump ----------
 
@@ -192,10 +347,12 @@ function update(){
 
     // ---------- Spinner ----------
 
-    spinner.angle += 0.15;
+const cx = player.x + player.w/2;
+const cy = player.y + player.h/2;
 
-    const cx = player.x + player.w/2;
-    const cy = player.y + player.h/2;
+for(let spinner of spinners){
+
+    spinner.angle += 0.15;
 
     const dx = cx - spinner.x;
     const dy = cy - spinner.y;
@@ -208,15 +365,31 @@ function update(){
 
     }
 
+}
+
     // ---------- Portal ----------
 
     if(collideRect(player, portal)){
 
-        alert("🎉 Level Complete!");
+    if(currentLevel < 10){
 
+        currentLevel++;
+        loadLevel(currentLevel);
+        resetPlayer();
+
+        alert("Level " + currentLevel + "!");
+
+    }else{
+
+        alert("🎉 You Beat The Game!");
+
+        currentLevel = 1;
+        loadLevel(1);
         resetPlayer();
 
     }
+
+}
 
     // ---------- Clouds ----------
 
@@ -303,31 +476,32 @@ function draw(){
 
     // ---------- Spinner ----------
 
+for(let s of spinners){
+
     ctx.save();
 
-    ctx.translate(spinner.x, spinner.y);
-    ctx.rotate(spinner.angle);
+    ctx.translate(s.x, s.y);
+    ctx.rotate(s.angle);
 
     ctx.strokeStyle="#888";
     ctx.lineWidth=4;
 
     for(let i=0;i<8;i++){
-
         ctx.rotate(Math.PI/4);
 
         ctx.beginPath();
         ctx.moveTo(0,0);
-        ctx.lineTo(spinner.r,0);
+        ctx.lineTo(s.r,0);
         ctx.stroke();
-
     }
 
     ctx.beginPath();
-    ctx.arc(0,0,spinner.r,0,Math.PI*2);
+    ctx.arc(0,0,s.r,0,Math.PI*2);
     ctx.stroke();
 
     ctx.restore();
 
+}
     // ---------- Portal ----------
 
     ctx.strokeStyle="#C34CFF";
@@ -360,9 +534,10 @@ function draw(){
     ctx.fillRect(player.x+22,player.y+10,2,2);
 
 }
+
+}
 // ==========================
 // PART 4
-// ==========================
 
 function game(){
 
